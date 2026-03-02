@@ -1,4 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/db/repos/birthday.repo");
+vi.mock("@/env", () => ({
+	env: { TG_BOT_TOKEN: "test", DB_HOST: "localhost" },
+}));
+
 import { isValidBirthDate } from "./birthday.service";
 
 describe("isValidBirthDate", () => {

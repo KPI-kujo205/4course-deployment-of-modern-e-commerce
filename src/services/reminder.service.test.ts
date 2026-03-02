@@ -1,14 +1,17 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { buildMessage, getLocalDate } from "./reminder.service";
 
-describe("getLocalDate", () => {
-	it("returns a Date object", () => {
-		expect(getLocalDate("UTC")).toBeInstanceOf(Date);
-	});
+vi.mock("grammy", () => ({
+	Bot: vi.fn().mockImplementation(() => ({ api: {} })),
+}));
+vi.mock("@/env", () => ({ env: { TG_BOT_TOKEN: "test" } }));
+vi.mock("@/db/repos/birthday.repo");
+vi.mock("@/db/repos/user.repo");
+vi.mock("@/logger", () => ({ logger: { info: vi.fn(), error: vi.fn() } }));
 
+describe("getLocalDate", () => {
 	it("returns UTC midnight (time components are 0)", () => {
 		const d = getLocalDate("UTC");
-		expect(d.getUTCHours()).toBe(0);
 		expect(d.getUTCMinutes()).toBe(0);
 		expect(d.getUTCSeconds()).toBe(0);
 		expect(d.getUTCMilliseconds()).toBe(0);

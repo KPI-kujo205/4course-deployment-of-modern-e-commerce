@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@grammyjs/conversations':
         specifier: ^2.1.1
-        version: 2.1.1(grammy@1.41.0)
+        version: 2.1.1(grammy@1.41.1)
       '@hono/node-server':
         specifier: ^1.19.6
         version: 1.19.9(hono@4.12.3)
@@ -23,6 +23,9 @@ importers:
       geo-tz:
         specifier: ^8.1.5
         version: 8.1.5
+      grammy:
+        specifier: ^1.41.1
+        version: 1.41.1
       hono:
         specifier: ^4.11.1
         version: 4.12.3
@@ -68,7 +71,7 @@ importers:
         version: 11.0.0
       kysely-codegen:
         specifier: ^0.19.0
-        version: 0.19.0(kysely@0.28.11)(mysql2@3.15.3)(pg@8.19.0)(typescript@5.9.3)
+        version: 0.19.0(kysely@0.28.11)(pg@8.19.0)(typescript@5.9.3)
       tsx:
         specifier: ^4.7.1
         version: 4.21.0
@@ -552,10 +555,6 @@ packages:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
 
-  aws-ssl-profiles@1.1.2:
-    resolution: {integrity: sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g==}
-    engines: {node: '>= 6.0.0'}
-
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
@@ -676,10 +675,6 @@ packages:
   defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
 
-  denque@2.1.0:
-    resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
-    engines: {node: '>=0.10'}
-
   destr@2.0.5:
     resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
 
@@ -772,9 +767,6 @@ packages:
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
-  generate-function@2.3.1:
-    resolution: {integrity: sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==}
-
   geo-tz@8.1.5:
     resolution: {integrity: sha512-C0g6Zyo/4/wtaONcprVq6gHq4LnbheC7HXXi0nZMG8lbxqvOj8IZcTolCd0MeOmBekXnyXKKeDlh6g2o4Yy3qw==}
     engines: {node: '>=16'}
@@ -798,8 +790,8 @@ packages:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
     deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
-  grammy@1.41.0:
-    resolution: {integrity: sha512-CAAu74SLT+/QCg40FBhUuYJalVsxxCN3D0c31TzhFBsWWTdXrMXYjGsKngBdfvN6hQ/VzHczluj/ugZVetFNCQ==}
+  grammy@1.41.1:
+    resolution: {integrity: sha512-wcHAQ1e7svL3fJMpDchcQVcWUmywhuepOOjHUHmMmWAwUJEIyK5ea5sbSjZd+Gy1aMpZeP8VYJa+4tP+j1YptQ==}
     engines: {node: ^12.20.0 || >=14.13.1}
 
   has-flag@3.0.0:
@@ -820,10 +812,6 @@ packages:
   hono@4.12.3:
     resolution: {integrity: sha512-SFsVSjp8sj5UumXOOFlkZOG6XS9SJDKw0TbwFeV+AJ8xlST8kxK5Z/5EYa111UY8732lK2S/xB653ceuaoGwpg==}
     engines: {node: '>=16.9.0'}
-
-  iconv-lite@0.7.2:
-    resolution: {integrity: sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==}
-    engines: {node: '>=0.10.0'}
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -853,9 +841,6 @@ packages:
   is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
-
-  is-property@1.0.2:
-    resolution: {integrity: sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g==}
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
@@ -944,15 +929,8 @@ packages:
     resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
     engines: {node: '>= 0.6.0'}
 
-  long@5.3.2:
-    resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==}
-
   loupe@3.2.1:
     resolution: {integrity: sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ==}
-
-  lru.min@1.1.4:
-    resolution: {integrity: sha512-DqC6n3QQ77zdFpCMASA1a3Jlb64Hv2N2DciFGkO/4L9+q/IpIAuRlKOvCXabtRW6cQf8usbmM6BE/TOPysCdIA==}
-    engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -969,14 +947,6 @@ packages:
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
-
-  mysql2@3.15.3:
-    resolution: {integrity: sha512-FBrGau0IXmuqg4haEZRBfHNWB5mUARw6hNwPDXXGg0XzVJ50mr/9hb267lvpVMnhZ1FON3qNd4Xfcez1rbFwSg==}
-    engines: {node: '>= 8.0'}
-
-  named-placeholders@1.1.6:
-    resolution: {integrity: sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==}
-    engines: {node: '>=8.0.0'}
 
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
@@ -1203,14 +1173,8 @@ packages:
     resolution: {integrity: sha512-b3rppTKm9T+PsVCBEOUR46GWI7fdOs00VKZ1+9c1EWDaDMvjQc6tUwuFyIprgGgTcWoVHSKrU8H31ZHA2e0RHA==}
     engines: {node: '>=10'}
 
-  safer-buffer@2.1.2:
-    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
-
   secure-json-parse@4.1.0:
     resolution: {integrity: sha512-l4KnYfEyqYJxDwlNVyRfO2E4NTHfMKAWdUuA8J0yve2Dz/E/PdBepY03RvyJpssIpRFwJoCD55wA+mEDs6ByWA==}
-
-  seq-queue@0.0.5:
-    resolution: {integrity: sha512-hr3Wtp/GZIc/6DAGPDcV4/9WoZhjrkXsi5B/07QgX8tsdc6ilr7BFM6PM6rbdAX1kFSDYeZGLipIZZKyQP0O5Q==}
 
   shapefile@0.6.6:
     resolution: {integrity: sha512-rLGSWeK2ufzCVx05wYd+xrWnOOdSV7xNUW5/XFgx3Bc02hBkpMlrd2F1dDII7/jhWzv0MSyBFh5uJIy9hLdfuw==}
@@ -1249,10 +1213,6 @@ packages:
   split2@4.2.0:
     resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
     engines: {node: '>= 10.x'}
-
-  sqlstring@2.3.3:
-    resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
-    engines: {node: '>= 0.6'}
 
   stackback@0.0.2:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
@@ -1598,9 +1558,9 @@ snapshots:
   '@esbuild/win32-x64@0.27.3':
     optional: true
 
-  '@grammyjs/conversations@2.1.1(grammy@1.41.0)':
+  '@grammyjs/conversations@2.1.1(grammy@1.41.1)':
     dependencies:
-      grammy: 1.41.0
+      grammy: 1.41.1
 
   '@grammyjs/types@3.25.0': {}
 
@@ -1796,9 +1756,6 @@ snapshots:
 
   atomic-sleep@1.0.0: {}
 
-  aws-ssl-profiles@1.1.2:
-    optional: true
-
   balanced-match@1.0.2: {}
 
   brace-expansion@1.1.12:
@@ -1916,9 +1873,6 @@ snapshots:
 
   defu@6.1.4: {}
 
-  denque@2.1.0:
-    optional: true
-
   destr@2.0.5: {}
 
   diff@3.5.1: {}
@@ -2014,11 +1968,6 @@ snapshots:
 
   function-bind@1.1.2: {}
 
-  generate-function@2.3.1:
-    dependencies:
-      is-property: 1.0.2
-    optional: true
-
   geo-tz@8.1.5:
     dependencies:
       '@turf/boolean-point-in-polygon': 7.3.4
@@ -2062,7 +2011,7 @@ snapshots:
       once: 1.4.0
       path-is-absolute: 1.0.1
 
-  grammy@1.41.0:
+  grammy@1.41.1:
     dependencies:
       '@grammyjs/types': 3.25.0
       abort-controller: 3.0.0
@@ -2083,11 +2032,6 @@ snapshots:
   help-me@5.0.0: {}
 
   hono@4.12.3: {}
-
-  iconv-lite@0.7.2:
-    dependencies:
-      safer-buffer: 2.1.2
-    optional: true
 
   ieee754@1.2.1: {}
 
@@ -2113,9 +2057,6 @@ snapshots:
 
   is-number@7.0.0: {}
 
-  is-property@1.0.2:
-    optional: true
-
   isexe@2.0.0: {}
 
   jiti@2.6.1: {}
@@ -2132,7 +2073,7 @@ snapshots:
 
   json-parse-even-better-errors@2.3.1: {}
 
-  kysely-codegen@0.19.0(kysely@0.28.11)(mysql2@3.15.3)(pg@8.19.0)(typescript@5.9.3):
+  kysely-codegen@0.19.0(kysely@0.28.11)(pg@8.19.0)(typescript@5.9.3):
     dependencies:
       chalk: 4.1.2
       cosmiconfig: 9.0.1(typescript@5.9.3)
@@ -2145,7 +2086,6 @@ snapshots:
       pluralize: 8.0.0
       zod: 4.3.6
     optionalDependencies:
-      mysql2: 3.15.3
       pg: 8.19.0
     transitivePeerDependencies:
       - typescript
@@ -2174,13 +2114,7 @@ snapshots:
 
   loglevel@1.9.2: {}
 
-  long@5.3.2:
-    optional: true
-
   loupe@3.2.1: {}
-
-  lru.min@1.1.4:
-    optional: true
 
   magic-string@0.30.21:
     dependencies:
@@ -2198,24 +2132,6 @@ snapshots:
   minimist@1.2.8: {}
 
   ms@2.1.3: {}
-
-  mysql2@3.15.3:
-    dependencies:
-      aws-ssl-profiles: 1.1.2
-      denque: 2.1.0
-      generate-function: 2.3.1
-      iconv-lite: 0.7.2
-      long: 5.3.2
-      lru.min: 1.1.4
-      named-placeholders: 1.1.6
-      seq-queue: 0.0.5
-      sqlstring: 2.3.3
-    optional: true
-
-  named-placeholders@1.1.6:
-    dependencies:
-      lru.min: 1.1.4
-    optional: true
 
   nanoid@3.3.11: {}
 
@@ -2466,13 +2382,7 @@ snapshots:
 
   safe-stable-stringify@2.5.0: {}
 
-  safer-buffer@2.1.2:
-    optional: true
-
   secure-json-parse@4.1.0: {}
-
-  seq-queue@0.0.5:
-    optional: true
 
   shapefile@0.6.6:
     dependencies:
@@ -2508,9 +2418,6 @@ snapshots:
   source-map-js@1.2.1: {}
 
   split2@4.2.0: {}
-
-  sqlstring@2.3.3:
-    optional: true
 
   stackback@0.0.2: {}
 

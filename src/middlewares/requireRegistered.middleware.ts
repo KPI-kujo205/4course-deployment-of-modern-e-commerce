@@ -1,6 +1,7 @@
 import type { Context, MiddlewareFn } from "grammy";
 
 import { userExists } from "@/db/repos/user.repo";
+import { logger } from "@/logger";
 
 /**
  * grammY middleware that restricts a command to registered users only.
@@ -22,6 +23,8 @@ export const requireRegistered: MiddlewareFn<Context> = async (ctx, next) => {
 		await ctx.reply("You need to register first. Send /start to get started.");
 		return;
 	}
+
+	logger.info("");
 
 	await next();
 };
