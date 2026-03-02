@@ -15,7 +15,7 @@
 		"db:up": "docker compose up -d",
 		"db:down": "docker compose down",
 		"test": "pnpm run test:unit && pnpm run test:i",
-		"test:unit": "vitest run ./src/**",
+		"test:unit": "dotenv -e .env.test vitest run ./src/**",
 		"test:i": "dotenv -e .env.test -- pnpm exec vitest run --config vitest.integration.config.ts",
 		"pretest:i": "docker compose -f docker-compose-test.yml --env-file .env.test up -d --wait && dotenv -e .env.test -- pnpm run db:migrate && dotenv -e .env.test -- pnpm run db:seed",
 		"posttest:i": "docker compose -f docker-compose-test.yml down"
