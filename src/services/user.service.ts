@@ -1,5 +1,5 @@
-import type { User } from "grammy/types";
-import { updateUserTimezone, upsertUser } from "@/db/repos/user.repo";
+import type {User} from "grammy/types";
+import {updateUserTimezone, upsertUser} from "@/db/repos/user.repo";
 
 /**
  * Persist a Telegram user to the DB the first time they interact with the bot.
@@ -53,4 +53,38 @@ function isValidIanaTimezone(tz: string): boolean {
 	} catch {
 		return false;
 	}
+}
+
+export async function applyTimezone(
+	userId: string,
+	tz: string,
+	ctx: {
+		reply: (text: string, extra?: Record<string, unknown>) => Promise<unknown>;
+	},
+): Promise<void> {
+	const result = await setUserTimezone(userId, tz);
+
+	if (!result.success) {
+		if (result.error === "invalid_timezone") {
+			await ctx.reply(
+				`"${tz}" is not a valid timezone name.\n\n` +
+					"Examples: Europe/Warsaw, America/New_York, Asia/Tokyo, UTC\n\n" +
+					"Full list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
+				{ reply_markup: { remove_keyboard: true } },
+			);
+		} else {
+			await ctx.reply(
+				"Something went wrong saving your timezone. Please try again later.",
+				{
+					reply_markup: { remove_keyboard: true },
+				},
+			);
+		}
+		return;
+	}
+
+	await ctx.reply(
+		`Timezone set to ${tz}.\nBirthday reminders will now be sent at midnight in your local time.`,
+		{ reply_markup: { remove_keyboard: true } },
+	);
 }

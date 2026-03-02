@@ -1,9 +1,10 @@
-import { find } from "geo-tz";
-import { Bot, webhookCallback } from "grammy";
-import { Hono } from "hono";
-import { env } from "@/env";
-import { logger } from "@/logger";
-import { registerUser, setUserTimezone } from "@/services/user.service";
+import {find} from "geo-tz";
+import {Bot, webhookCallback} from "grammy";
+import {Hono} from "hono";
+import {env} from "@/env";
+import {logger} from "@/logger";
+import {requireRegistered} from "@/middlewares/requireRegistered.middleware";
+import {applyTimezone, registerUser} from "@/services/user.service";
 
 const endpoint = `${env.BASE_URL}/bot/webhook`;
 
@@ -63,7 +64,7 @@ bot.command("start", async (ctx) => {
  *
  * Timezone changes take effect on the next hourly cron tick.
  */
-bot.command("settimezone", async (ctx) => {
+bot.command("settimezone", requireRegistered, async (ctx) => {
 	const userId = ctx.from?.id;
 	if (!userId) {
 		await ctx.reply("Could not identify your user ID. Please try again.");
@@ -137,41 +138,3 @@ bot.on("message", async (ctx) => {
 });
 
 export { tgRoute };
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-async function applyTimezone(
-	userId: string,
-	tz: string,
-	ctx: {
-		reply: (text: string, extra?: Record<string, unknown>) => Promise<unknown>;
-	},
-): Promise<void> {
-	const result = await setUserTimezone(userId, tz);
-
-	if (!result.success) {
-		if (result.error === "invalid_timezone") {
-			await ctx.reply(
-				`"${tz}" is not a valid timezone name.\n\n` +
-					"Examples: Europe/Warsaw, America/New_York, Asia/Tokyo, UTC\n\n" +
-					"Full list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
-				{ reply_markup: { remove_keyboard: true } },
-			);
-		} else {
-			await ctx.reply(
-				"Something went wrong saving your timezone. Please try again later.",
-				{
-					reply_markup: { remove_keyboard: true },
-				},
-			);
-		}
-		return;
-	}
-
-	await ctx.reply(
-		`Timezone set to ${tz}.\nBirthday reminders will now be sent at midnight in your local time.`,
-		{ reply_markup: { remove_keyboard: true } },
-	);
-}

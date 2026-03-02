@@ -1,5 +1,5 @@
-import { sql } from "kysely";
-import { db } from "@/db";
+import {sql} from "kysely";
+import {db} from "@/db";
 
 export interface UpsertUserParams {
 	id: string;
@@ -52,13 +52,13 @@ export async function getUsersAtLocalMidnight() {
 		.execute();
 }
 
-/** Return the stored timezone string for a user, defaulting to 'UTC'. */
-export async function getUserTimezone(userId: string): Promise<string> {
+/** Return true if a user row exists for the given Telegram user ID. */
+export async function userExists(userId: string): Promise<boolean> {
 	const row = await db
 		.selectFrom("users")
-		.select("timezone")
+		.select("id")
 		.where("id", "=", userId)
 		.executeTakeFirst();
 
-	return row?.timezone ?? "UTC";
+	return row !== undefined;
 }
