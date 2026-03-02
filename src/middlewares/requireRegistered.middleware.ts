@@ -24,7 +24,7 @@ export const requireRegistered: MiddlewareFn<Context> = async (ctx, next) => {
 		return;
 	}
 
-	logger.info("");
+	logger.info(`User ${userId} executed command: ${ctx.message?.text}`);
 
 	await next();
 };
