@@ -1,6 +1,6 @@
 {
 	"extends": "@repo/typescript-config/base.json",
-	"exclude": ["node_modules"],
+	"exclude": ["node_modules", "dist"],
 	"compilerOptions": {
 		"composite": true,
 		"jsx": "react-jsx",

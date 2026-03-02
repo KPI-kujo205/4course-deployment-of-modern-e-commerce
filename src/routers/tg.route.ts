@@ -1,14 +1,23 @@
-import {find} from "geo-tz";
-import {Bot, webhookCallback} from "grammy";
-import {Hono} from "hono";
-import {env} from "@/env";
-import {logger} from "@/logger";
-import {requireRegistered} from "@/middlewares/requireRegistered.middleware";
-import {applyTimezone, registerUser} from "@/services/user.service";
+import { conversations, createConversation } from "@grammyjs/conversations";
+import { find } from "geo-tz";
+import { Bot, webhookCallback } from "grammy";
+import { Hono } from "hono";
+import { env } from "@/env";
+import { logger } from "@/logger";
+import { requireRegistered } from "@/middlewares/requireRegistered.middleware";
+import type { BotContext } from "@/routers/add.conversation";
+import { addPersonConversation } from "@/routers/add.conversation";
+import { listConversation } from "@/routers/list.conversation";
+import { applyTimezone, registerUser } from "@/services/user.service";
 
 const endpoint = `${env.BASE_URL}/bot/webhook`;
 
-export const bot = new Bot(env.TG_BOT_TOKEN);
+export const bot = new Bot<BotContext>(env.TG_BOT_TOKEN);
+
+// Register the conversations plugin (uses in-memory storage by default)
+bot.use(conversations());
+bot.use(createConversation(addPersonConversation, "add-person"));
+bot.use(createConversation(listConversation, "list-birthdays"));
 
 const tgRoute = new Hono();
 
@@ -23,14 +32,24 @@ if (env.NODE_ENV === "production") {
 const COMMANDS_TEXT =
 	"Here's what I can do:\n\n" +
 	"/start — show this message\n" +
+	"/add — add a person's birthday\n" +
+	"/list — list upcoming birthdays\n" +
+	"/edit — edit a person's birthday\n" +
+	"/delete — delete a person\n" +
 	"/settimezone — set your timezone (share location or type a name like Europe/Warsaw)";
 
+// Register the command list with Telegram so the / menu is populated
+bot.api.setMyCommands([
+	{ command: "start", description: "Show this message" },
+	{ command: "add", description: "Add a person's birthday" },
+	{ command: "list", description: "List upcoming birthdays" },
+	{ command: "edit", description: "Edit a person's birthday" },
+	{ command: "delete", description: "Delete a person" },
+	{ command: "settimezone", description: "Set your timezone" },
+]);
+
 /**
- * /start
- *
- * Registers the user in the DB on first interaction (subsequent calls are
- * no-ops). Always replies with the full command list so the user knows what
- * the bot can do.
+ * /start — register user on first interaction, reply with command list.
  */
 bot.command("start", async (ctx) => {
 	const from = ctx.from;
@@ -52,17 +71,38 @@ bot.command("start", async (ctx) => {
 });
 
 /**
+ * /add — multi-step wizard to add a person's birthday.
+ */
+bot.command("add", requireRegistered, async (ctx) => {
+	await ctx.conversation.enter("add-person");
+});
+
+/**
+ * /list — paginated list of upcoming birthdays with inline edit/delete.
+ */
+bot.command("list", requireRegistered, async (ctx) => {
+	await ctx.conversation.enter("list-birthdays");
+});
+
+/**
+ * /edit — enter the list picker to select a person to edit.
+ */
+bot.command("edit", requireRegistered, async (ctx) => {
+	await ctx.conversation.enter("list-birthdays");
+});
+
+/**
+ * /delete — enter the list picker to select a person to delete.
+ */
+bot.command("delete", requireRegistered, async (ctx) => {
+	await ctx.conversation.enter("list-birthdays");
+});
+
+/**
  * /settimezone [IANA timezone]
  *
- * Without argument — sends a "Share my location" button so the bot can
- * detect the timezone automatically from GPS coordinates.
- *
- * With argument — sets the timezone directly by IANA name:
- *   /settimezone Europe/Warsaw
- *   /settimezone America/New_York
- *   /settimezone Asia/Tokyo
- *
- * Timezone changes take effect on the next hourly cron tick.
+ * Without argument — sends a "Share my location" button.
+ * With argument — sets the timezone directly by IANA name.
  */
 bot.command("settimezone", requireRegistered, async (ctx) => {
 	const userId = ctx.from?.id;
@@ -73,7 +113,6 @@ bot.command("settimezone", requireRegistered, async (ctx) => {
 
 	const tz = ctx.match?.trim();
 
-	// No argument — prompt the user to share their location
 	if (!tz) {
 		await ctx.reply(
 			"Share your location and I will detect your timezone automatically.\n\n" +
@@ -90,15 +129,11 @@ bot.command("settimezone", requireRegistered, async (ctx) => {
 		return;
 	}
 
-	// Argument provided — set timezone directly by IANA name
 	await applyTimezone(String(userId), tz, ctx);
 });
 
 /**
- * Location message handler — fires when the user taps "Share my location".
- *
- * Resolves the IANA timezone from GPS coordinates using geo-tz (offline,
- * no API key required) and saves it exactly like the text command does.
+ * Location message handler — resolves IANA timezone from GPS via geo-tz.
  */
 bot.on("message:location", async (ctx) => {
 	const userId = ctx.from?.id;
@@ -132,8 +167,8 @@ bot.on("message", async (ctx) => {
 	logger.info({ userId: ctx.from?.id }, "Received message");
 	await ctx.reply(
 		"Hello! I am your birthday reminder bot.\n\n" +
-			"Use /settimezone to set your timezone — " +
-			"you can share your location or type a timezone name directly (like /settimezone Europe/Warsaw).\n\n",
+			"Use /add to add a birthday, /list to see upcoming ones.\n\n" +
+			COMMANDS_TEXT,
 	);
 });
 
