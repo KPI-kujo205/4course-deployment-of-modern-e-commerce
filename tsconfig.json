@@ -1,0 +1,21 @@
+{
+	"extends": "@repo/typescript-config/base.json",
+	"exclude": ["node_modules"],
+	"compilerOptions": {
+		"composite": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "hono/jsx",
+		"types": ["node"],
+		"outDir": "./dist",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@core/*": ["./src/core/*"],
+			"@infra/*": ["./src/infra/*"]
+		}
+	}
+}
