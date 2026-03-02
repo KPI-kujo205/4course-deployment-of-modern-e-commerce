@@ -12,7 +12,7 @@ import {
 	formatDetailCard,
 	formatEntryLine,
 	parseBirthDate,
-} from "@/utils/birthday.helpers";
+} from "@/utils/birthday-helpers";
 
 type BotContext = ConversationFlavor<Context>;
 type BotConversation = Conversation<BotContext, BotContext>;

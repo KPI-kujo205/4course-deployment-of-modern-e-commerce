@@ -2,7 +2,7 @@ import type { Conversation, ConversationFlavor } from "@grammyjs/conversations";
 import type { Context } from "grammy";
 import { InlineKeyboard } from "grammy";
 import { addBirthday } from "@/services/birthday.service";
-import { formatDate, parseBirthDate } from "@/utils/birthday.helpers";
+import { formatDate, parseBirthDate } from "@/utils/birthday-helpers";
 
 export type BotContext = ConversationFlavor<Context>;
 export type AddConversation = Conversation<BotContext, BotContext>;

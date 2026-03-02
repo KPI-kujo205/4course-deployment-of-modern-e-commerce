@@ -1,5 +1,4 @@
 {
-	"extends": "@repo/typescript-config/base.json",
 	"exclude": ["node_modules", "dist"],
 	"compilerOptions": {
 		"composite": true,
@@ -10,7 +9,6 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"],
