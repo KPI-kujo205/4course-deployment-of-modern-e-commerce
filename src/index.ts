@@ -1,13 +1,14 @@
 import "dotenv/config";
 
-import {serve} from "@hono/node-server";
-import {Hono} from "hono";
-import {onError} from "stoker/middlewares";
-import {db} from "@/db";
-import {env} from "@/env";
-import {logger} from "@/logger";
-import {loggerMiddleware} from "@/middlewares/logger.middleware";
-import {indexRouter, tgRoute} from "@/routers";
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { onError } from "stoker/middlewares";
+import { db } from "@/db";
+import { env } from "@/env";
+import { logger } from "@/logger";
+import { loggerMiddleware } from "@/middlewares/logger.middleware";
+import { indexRouter, tgRoute } from "@/routers";
+import { startScheduler } from "@/scheduler";
 
 const app = new Hono()
 	.use(loggerMiddleware)
@@ -35,8 +36,11 @@ const server = serve(
 	},
 );
 
+const stopScheduler = startScheduler();
+
 const shutdown = async (signal: string) => {
 	logger.info(`${signal} received. Starting graceful shutdown...`);
+	stopScheduler();
 	server.close();
 	await db.destroy();
 	logger.info("Graceful shutdown complete");
