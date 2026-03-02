@@ -4,7 +4,6 @@ import { getUsersAtLocalMidnight } from "@/db/repos/user.repo";
 import { env } from "@/env";
 import { logger } from "@/logger";
 
-// Months as displayed names for Telegram messages
 const MONTH_NAMES = [
 	"January",
 	"February",
@@ -86,7 +85,7 @@ export async function processReminders(): Promise<void> {
  * We format just the date parts and reconstruct a local midnight Date object
  * so downstream date arithmetic (getDate, getMonth, etc.) works correctly.
  */
-function getLocalDate(timezone: string): Date {
+export function getLocalDate(timezone: string): Date {
 	const formatter = new Intl.DateTimeFormat("en-CA", {
 		timeZone: timezone,
 		year: "numeric",
@@ -102,7 +101,7 @@ function getLocalDate(timezone: string): Date {
 	return new Date(Date.UTC(year, month - 1, day));
 }
 
-function buildMessage(
+export function buildMessage(
 	name: string | null,
 	day: number,
 	month: number,

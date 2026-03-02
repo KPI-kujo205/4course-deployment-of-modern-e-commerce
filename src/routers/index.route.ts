@@ -1,5 +1,5 @@
-import {Hono} from "hono";
-import {getHealthStatus} from "@/services/health.service";
+import { Hono } from "hono";
+import { getHealthStatus } from "@/services/health.service";
 
 const indexRouter = new Hono();
 

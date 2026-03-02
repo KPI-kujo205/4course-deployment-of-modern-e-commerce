@@ -1,11 +1,6 @@
 import type { Conversation, ConversationFlavor } from "@grammyjs/conversations";
 import type { Context } from "grammy";
 import { InlineKeyboard } from "grammy";
-import {
-	formatDetailCard,
-	formatEntryLine,
-	parseBirthDate,
-} from "@/routers/birthday.helpers";
 import type { BirthdayEntry } from "@/services/birthday.service";
 import {
 	editBirthday,
@@ -13,6 +8,11 @@ import {
 	listBirthdays,
 	removeBirthday,
 } from "@/services/birthday.service";
+import {
+	formatDetailCard,
+	formatEntryLine,
+	parseBirthDate,
+} from "@/utils/birthday.helpers";
 
 type BotContext = ConversationFlavor<Context>;
 type BotConversation = Conversation<BotContext, BotContext>;
@@ -175,7 +175,9 @@ export async function listConversation(
 
 		// ── pagination ───────────────────────────────────────────────────────────
 		if (data.startsWith("page:")) {
-			page = Number(data.slice(5));
+			const parsed = Number(data.slice(5));
+			if (Number.isNaN(parsed)) continue;
+			page = parsed;
 			const pageData = await conversation.external(() =>
 				listBirthdays(String(userId), page),
 			);

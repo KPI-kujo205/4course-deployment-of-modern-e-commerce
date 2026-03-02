@@ -1,4 +1,4 @@
-import {fetchSomeTable} from "@/db/repos/health.repo";
+import { fetchSomeTable } from "@/db/repos/health.repo";
 
 export interface HealthStatus {
 	status: "ok" | "error";

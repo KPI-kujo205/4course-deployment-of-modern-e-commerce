@@ -2,58 +2,10 @@ import type { Conversation, ConversationFlavor } from "@grammyjs/conversations";
 import type { Context } from "grammy";
 import { InlineKeyboard } from "grammy";
 import { addBirthday } from "@/services/birthday.service";
+import { formatDate, parseBirthDate } from "@/utils/birthday.helpers";
 
 export type BotContext = ConversationFlavor<Context>;
 export type AddConversation = Conversation<BotContext, BotContext>;
-
-const MONTHS = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-
-/**
- * Parse a date string in DD/MM or DD/MM/YYYY format.
- * Returns null if the string is not a valid date.
- */
-function parseBirthDate(
-	input: string,
-): { day: number; month: number; year: number | null } | null {
-	const parts = input.trim().split("/");
-	if (parts.length < 2 || parts.length > 3) return null;
-
-	const day = Number(parts[0]);
-	const month = Number(parts[1]);
-	const year = parts[2] ? Number(parts[2]) : null;
-
-	if (!Number.isInteger(day) || !Number.isInteger(month)) return null;
-	if (year !== null && !Number.isInteger(year)) return null;
-
-	// Basic range check — birthday service does the full validation
-	if (month < 1 || month > 12) return null;
-	if (day < 1 || day > 31) return null;
-	if (year !== null && (year < 1900 || year > new Date().getFullYear()))
-		return null;
-
-	return { day, month, year };
-}
-
-/**
- * Format a birthday for the confirmation summary.
- */
-function formatDate(day: number, month: number, year: number | null): string {
-	const monthName = MONTHS[month - 1];
-	return year ? `${day} ${monthName} ${year}` : `${day} ${monthName}`;
-}
 
 /**
  * Multi-step wizard conversation for adding a birthday entry.

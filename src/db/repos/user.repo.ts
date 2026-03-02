@@ -1,5 +1,5 @@
-import {sql} from "kysely";
-import {db} from "@/db";
+import { sql } from "kysely";
+import { db } from "@/db";
 
 export interface UpsertUserParams {
 	id: string;

@@ -1,6 +1,6 @@
-import {zValidator} from "@hono/zod-validator";
-import type {ValidationTargets} from "hono";
-import type {ZodSchema} from "zod";
+import { zValidator } from "@hono/zod-validator";
+import type { ValidationTargets } from "hono";
+import type { ZodSchema } from "zod";
 
 /**
  * A type-safe wrapper for zValidator that returns a consistent 400 error format.

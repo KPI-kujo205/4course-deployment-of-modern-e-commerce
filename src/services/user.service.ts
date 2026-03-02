@@ -1,5 +1,18 @@
-import type {User} from "grammy/types";
-import {updateUserTimezone, upsertUser} from "@/db/repos/user.repo";
+import type { User } from "grammy/types";
+import { z } from "zod";
+import { updateUserTimezone, upsertUser } from "@/db/repos/user.repo";
+
+const timezoneSchema = z.string().refine(
+	(tz) => {
+		try {
+			Intl.DateTimeFormat(undefined, { timeZone: tz });
+			return true;
+		} catch {
+			return false;
+		}
+	},
+	{ message: "Invalid IANA timezone identifier" },
+);
 
 /**
  * Persist a Telegram user to the DB the first time they interact with the bot.
@@ -29,7 +42,7 @@ export async function setUserTimezone(
 	userId: string,
 	timezone: string,
 ): Promise<SetTimezoneResult> {
-	if (!isValidIanaTimezone(timezone)) {
+	if (!timezoneSchema.safeParse(timezone).success) {
 		return { success: false, error: "invalid_timezone" };
 	}
 
@@ -38,20 +51,6 @@ export async function setUserTimezone(
 		return { success: true };
 	} catch {
 		return { success: false, error: "db_error" };
-	}
-}
-
-/**
- * Validate an IANA timezone identifier using the Intl.DateTimeFormat API.
- * Node 20 supports Intl.supportedValuesOf("timeZone") for an exact check.
- */
-function isValidIanaTimezone(tz: string): boolean {
-	try {
-		// This throws a RangeError for unknown timezone identifiers.
-		Intl.DateTimeFormat(undefined, { timeZone: tz });
-		return true;
-	} catch {
-		return false;
 	}
 }
 

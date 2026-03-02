@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 export const envSchema = z.object({
 	// DB Configuration
@@ -13,7 +13,9 @@ export const envSchema = z.object({
 	PORT: z.coerce.number().default(4000),
 	BASE_URL: z.string(),
 
-	NODE_ENV: z.enum(["development", "production"]).default("development"),
+	NODE_ENV: z
+		.enum(["development", "production", "test"])
+		.default("development"),
 });
 
 export const env = envSchema.parse(process.env);

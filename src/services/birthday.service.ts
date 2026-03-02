@@ -9,6 +9,7 @@ import {
 	listUpcomingBirthdays,
 	updateBirthday,
 } from "@/db/repos/birthday.repo";
+import { birthDateObjectSchema } from "@/schemas/birth-date.schema";
 
 export type { BirthdayEntry };
 
@@ -111,20 +112,19 @@ export async function editBirthday(
 	birthdayId: string,
 	patch: UpdateBirthdayPatch,
 ): Promise<EditBirthdayResult> {
-	// Validate date fields if any are present in the patch
 	if (
 		patch.birthDay !== undefined ||
 		patch.birthMonth !== undefined ||
 		patch.birthYear !== undefined
 	) {
-		// We need all three to validate — fetch missing ones if needed
-		// For now the callers always send all three date fields together
-		const day = patch.birthDay;
-		const month = patch.birthMonth;
-		if (day !== undefined && month !== undefined) {
-			if (!isValidBirthDate(day, month, patch.birthYear ?? null)) {
-				return { success: false, error: "invalid_date" };
-			}
+		if (
+			!isValidBirthDate(
+				patch.birthDay ?? 0,
+				patch.birthMonth ?? 0,
+				patch.birthYear ?? null,
+			)
+		) {
+			return { success: false, error: "invalid_date" };
 		}
 	}
 
@@ -140,23 +140,12 @@ export async function editBirthday(
 /**
  * Validate that the day/month combination is a real calendar date.
  * Year is optional — when provided it must be a plausible birth year.
+ * Delegates to birthDateObjectSchema so validation logic lives in one place.
  */
 export function isValidBirthDate(
 	day: number,
 	month: number,
 	year: number | null,
 ): boolean {
-	if (month < 1 || month > 12) return false;
-	if (day < 1) return false;
-
-	const refYear = year ?? 2000;
-
-	if (year !== null) {
-		const currentYear = new Date().getFullYear();
-		if (year < 1900 || year > currentYear) return false;
-	}
-
-	// Date constructor with out-of-range day rolls over — detect that
-	const d = new Date(refYear, month - 1, day);
-	return d.getMonth() === month - 1 && d.getDate() === day;
+	return birthDateObjectSchema.safeParse({ day, month, year }).success;
 }

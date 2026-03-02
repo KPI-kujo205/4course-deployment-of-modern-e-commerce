@@ -1,3 +1,4 @@
+import { birthDateStringSchema } from "@/schemas/birth-date.schema";
 import type { BirthdayEntry } from "@/services/birthday.service";
 
 export const MONTHS = [
@@ -64,19 +65,6 @@ export function formatDetailCard(entry: BirthdayEntry): string {
 export function parseBirthDate(
 	input: string,
 ): { day: number; month: number; year: number | null } | null {
-	const parts = input.trim().split("/");
-	if (parts.length < 2 || parts.length > 3) return null;
-
-	const day = Number(parts[0]);
-	const month = Number(parts[1]);
-	const year = parts[2] ? Number(parts[2]) : null;
-
-	if (!Number.isInteger(day) || !Number.isInteger(month)) return null;
-	if (year !== null && !Number.isInteger(year)) return null;
-	if (month < 1 || month > 12) return null;
-	if (day < 1 || day > 31) return null;
-	if (year !== null && (year < 1900 || year > new Date().getFullYear()))
-		return null;
-
-	return { day, month, year };
+	const result = birthDateStringSchema.safeParse(input);
+	return result.success ? result.data : null;
 }
