@@ -31,7 +31,6 @@ services:
       db:
         condition: service_healthy
     restart: on-failure
-    command: sh -c "pnpm run db:migrate && pnpm start"
 
 volumes:
   prod_db_data:
