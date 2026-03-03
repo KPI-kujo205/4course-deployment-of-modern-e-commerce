@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ecommerce
+description: Birthday Reminder API + Telegram Bot
+type: application
+version: 0.1.0
+appVersion: "latest"
