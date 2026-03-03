@@ -1,0 +1,50 @@
+name: Lab 3 Grading
+
+on: [ push ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set lowercase owner
+        run: echo "OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Create KinD cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: lab3-cluster
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Docker image
+        run: docker pull ghcr.io/${{ env.OWNER }}/ecommerce-app:latest
+
+      - name: Load image into KinD
+        run: kind load docker-image ghcr.io/${{ env.OWNER }}/ecommerce-app:latest --name lab3-cluster
+
+      - name: Apply all Kubernetes manifests
+        run: kubectl apply -f k8s/
+
+      - name: Run Master Validation Script
+        run: |
+          chmod +x ./tests/test-scripts/lab3_test.sh
+          ./tests/test-scripts/lab3_test.sh
+
+      - name: Debug pod status
+        if: always()
+        run: |
+          kubectl get pods
+          kubectl describe pods
+          kubectl logs -l app=ecommerce-app --tail=50
