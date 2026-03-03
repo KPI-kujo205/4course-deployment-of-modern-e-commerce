@@ -14,6 +14,13 @@ spec:
       labels:
         app: ecommerce-app
     spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - until nc -z postgres-service 5432; do echo "Waiting for postgres..."; sleep 2; done
       containers:
         - name: ecommerce-app
           image: ghcr.io/kpi-kujo205/ecommerce-app:latest
@@ -21,10 +28,10 @@ spec:
           ports:
             - containerPort: 4000
           envFrom:
-            - configMapRef:
-                name: ecommerce-config
             - secretRef:
                 name: ecommerce-secret
+            - configMapRef:
+                name: ecommerce-config
           livenessProbe:
             httpGet:
               path: /health
