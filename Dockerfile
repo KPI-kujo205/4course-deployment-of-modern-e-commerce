@@ -28,3 +28,6 @@ ENV NODE_ENV=production
 ENV PORT=4000
 
 EXPOSE $PORT
+
+CMD ["sh", "-c", "pnpm run db:migrate && pnpm start"]
+
