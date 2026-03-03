@@ -9,8 +9,10 @@ echo "--- Starting Lab 2 Grading (GHCR Check) ---"
 
 # 1. Checking package presence via GitHub API
 echo "Step 1: Requesting package metadata from GHCR..."
+
+# Use the lowercased owner for the API call
 RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-  "[https://api.github.com/users/$](https://api.github.com/users/$){GITHUB_REPOSITORY_OWNER}/packages/container/${PACKAGE_NAME}")
+  "https://api.github.com/users/${OWNER_LC}/packages/container/${PACKAGE_NAME}")
 
 if echo "$RESPONSE" | grep -q "Not Found"; then
   echo "❌ Error: Package '${PACKAGE_NAME}' not found in GHCR."
@@ -20,8 +22,9 @@ fi
 
 # 2. Verifying Tags (latest + SHA)
 echo "Step 2: Verifying tags..."
+# Use the lowercased owner for the API call
 VERSIONS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-  "[https://api.github.com/users/$](https://api.github.com/users/$){GITHUB_REPOSITORY_OWNER}/packages/container/${PACKAGE_NAME}/versions")
+  "https://api.github.com/users/${OWNER_LC}/packages/container/${PACKAGE_NAME}/versions")
 
 TAGS=$(echo "$VERSIONS" | jq -r '.[0].metadata.container.tags[]')
 

@@ -1,5 +1,5 @@
 # --- Stage 1: Dependencies ---
-FROM node:20-alpine AS deps
+FROM node:21-alpine AS deps
 
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 
