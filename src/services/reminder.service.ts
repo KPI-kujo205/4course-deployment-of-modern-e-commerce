@@ -1,4 +1,4 @@
-import { Bot } from "grammy";
+import type { Bot } from "grammy";
 import { getDueBirthdays, logReminder } from "@/db/repos/birthday.repo";
 import { getUsersAtLocalMidnight } from "@/db/repos/user.repo";
 import { env } from "@/env";
@@ -19,8 +19,6 @@ const MONTH_NAMES = [
 	"December",
 ];
 
-const bot = new Bot(env.TG_BOT_TOKEN);
-
 /**
  * Main entry point called by the hourly cron job.
  *
@@ -31,7 +29,7 @@ const bot = new Bot(env.TG_BOT_TOKEN);
  *  4. Send a Telegram message for each due birthday.
  *  5. Log the reminder so it is not sent again this year.
  */
-export async function processReminders(): Promise<void> {
+export async function processReminders(bot: Bot): Promise<void> {
 	const users = await getUsersAtLocalMidnight();
 
 	if (users.length === 0) {

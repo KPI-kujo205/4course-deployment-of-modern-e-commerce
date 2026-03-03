@@ -2,21 +2,36 @@ services:
   db:
     image: postgres:13-alpine
     env_file:
-      - ./.env
+      - .env
+    ports:
+      - ${DB_PORT:-5432}:5432
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-mydatabase}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - prod_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U user -d mydatabase" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-user} -d ${DB_NAME:-mydatabase}" ]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
+
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 5666:5432
+      - "8080:${PORT}"
+    env_file:
+      - ./.env
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+    command: sh -c "pnpm run db:migrate && pnpm start"
 
 volumes:
-  db_data:
-
+  prod_db_data:

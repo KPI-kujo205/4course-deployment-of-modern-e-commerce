@@ -8,7 +8,7 @@ export const envSchema = z.object({
 	DB_PORT: z.coerce.number(),
 	DB_HOST: z.string(),
 
-	TG_BOT_TOKEN: z.string(),
+	TG_BOT_TOKEN: z.string().optional(),
 
 	PORT: z.coerce.number().default(4000),
 	BASE_URL: z.string(),
