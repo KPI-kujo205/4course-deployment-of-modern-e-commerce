@@ -1,5 +1,6 @@
 import { schedule, validate } from "node-cron";
 import { logger } from "@/logger";
+import { bot } from "@/routers/tg.route";
 import { processReminders } from "@/services/reminder.service";
 
 // Run at the top of every hour — the reminder service internally filters
@@ -18,7 +19,10 @@ export function startScheduler(): () => void {
 	const task = schedule(CRON_EXPRESSION, async () => {
 		logger.info("Cron: running reminder check");
 		try {
-			await processReminders();
+			if (bot) {
+				// @ts-expect-error: ts tells bs
+				await processReminders(bot);
+			}
 		} catch (err) {
 			logger.error({ err }, "Cron: unhandled error in processReminders");
 		}
